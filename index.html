@@ -9,8 +9,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="row row-cols-4 my-5 text-center">
+    <div class="container text-center">
+        <div class="row row-cols-4 my-5">
             <div class="col">
                 <label class="form-label" for="min">Minimum</label>
                 <input class="form-control" type="number" name="min" id="min" placeholder="Min Number" value="1">
@@ -27,11 +27,20 @@
             </div>
         </div>
         <hr>
-        <div class="row row-cols-1 my-5 text-center">
+        <div class="row row-cols-1 my-5">
             <div class="col">
                 <button class="btn btn-warning" onclick="sequence()">Randomize Sequence</button>
             </div>
             <div class="col my-3" id="sequence"></div>
+        </div>
+        <hr>
+        <div class="row row-cols-2 my-5">
+            <div class="col">
+                <label for="list" class="form-label"></label>
+                <textarea class="form-control" name="list" id="list" cols="30" rows="10" placeholder="Type your list here. Each item in a different line."></textarea>
+                <button class="btn btn-info m-3" onclick="list()">Randomize List</button>
+            </div>
+            <div class="col" id="divList"></div>
         </div>
     </div>
 
@@ -54,11 +63,29 @@
                 const dice = Math.floor(Math.random() * (max - min + 1)) + min;
                 numbers.add(dice);
             }
-            document.querySelector("#sequence").innerHTML = "";
+            writeList(Array.from(numbers), "#sequence")
+        }
+
+        function list() {
+            const orderedList = document.querySelector("#list").value.split("\n");
+            const numbers = new Set();
+            while (numbers.size < orderedList.length) {
+                const dice = Math.floor(Math.random() * orderedList.length);
+                numbers.add(dice);
+            }
+            let randomArray = [];
             Array.from(numbers).forEach(number => {
+                randomArray.push(orderedList[number]);
+            });
+            writeList(randomArray, "#divList")
+        }
+
+        function writeList(list, output) {
+            document.querySelector(output).innerHTML = "";
+            list.forEach(number => {
                 const h2 = document.createElement('h2');
                 h2.textContent = number;
-                document.querySelector("#sequence").appendChild(h2);
+                document.querySelector(output).appendChild(h2);
             });
         }
     </script>
